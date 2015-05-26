@@ -8,7 +8,7 @@
     <string name="local3">register</string>
     <string name="local4">refresh</string>
     <string name="local5">share</string>
-    <string name="local6">get 'Find My Drunk Friends'</string>
+    <string name="local6">get \'Find My Drunk Friends\'</string>
     <string name="local81">Nudity and offensive photos are not permitted. Policy violation will result in account termination.</string>
     <string name="local83">Use your camera or choose images from your devices album, then tap upload. Photo should be a clear photo of yourself.</string>
     <string name="local84">Remember to tap upload after you have selected your photo.</string>
@@ -24,7 +24,7 @@
     <string name="local316">content must be a valid name, 3-20 characters (no spaces and no special characters), multiple names must be seperated by a space</string>
     <string name="local207">To tell your friends about this app, tap on either the email or text icons:</string>
     <string name="local208A">Hey I just installed the new app from iTunes "Find My Drunk Friends". My user id in the app is %d After you install it, text me your user id. Currently it only works on iPhone/iPad devices. Here is the iTunes link: https://itunes.apple.com/us/app/find-my-drunk-friends/id972511208?ls=</string>
-    <string name="local321">Find My Drunk Friends allows you to see your location and your friends location interactively on a map. Simply ask your friend/s to also install the app, then exchange user id's with one another and you can then easily find one another. </string>
+    <string name="local321">Find My Drunk Friends allows you to see your location and your friends location interactively on a map. Simply ask your friend/s to also install the app, then exchange user id\'s with one another and you can then easily find one another. </string>
     <string name="local303">App problem or suggestion, tap here:</string>
     <string name="local307">miles</string>
     <string name="local308">km</string>
@@ -83,10 +83,13 @@
     <string name="local374">The location of all users is updated automatically every 10 minutes in the standard app version. In the plus version of the app, user locations are updated every 2 minutes.</string>
     <string name="local375">You have not yet added any friends to your database. Tap the share link to invite your friends, then tap the friends link to add your friends.</string>
     <string name="local376">Drink Tally</string>
-    <string name="local377">Need to keep track of how many drinks you've had? Tap beer glass to add 1, to reset the counter to zero, enter demo mode.</string>
+    <string name="local377">Need to keep track of how many drinks you\'ve had? Tap beer glass to add 1, to reset the counter to zero, enter demo mode.</string>
     <string name="title_activity_splash">SplashActivity</string>
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="Cancel">Cancel</string>
+    <string name="gps_network_not_enabled">GPS not enabled</string>
+    <string name="open_location_settings">Open Location Settings</string>
 
 </resources>

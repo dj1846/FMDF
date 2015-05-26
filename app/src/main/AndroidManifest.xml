@@ -27,7 +27,13 @@
 
         <activity
             android:name=".MainActivity"
+            android:screenOrientation="landscape"
             android:label="@string/title_activity_main" >
+        </activity>
+        <activity
+            android:name=".SplashActivity"
+            android:screenOrientation="landscape"
+            android:label="@string/title_activity_splash" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

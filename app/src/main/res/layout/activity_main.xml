@@ -3,88 +3,155 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <fragment
-        android:id="@+id/map"
-        android:name="com.google.android.gms.maps.SupportMapFragment"
+    <RelativeLayout
+        android:padding="5dp"
+        android:id="@+id/top_menu"
+        android:background="@android:color/white"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize">
+
+        <RadioGroup
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_centerVertical="true">
+
+            <picamerica.com.findmydrunkfriends.views.CustomRadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:button="@null"
+                android:text="friends"
+                android:checked="true"
+                android:background="@drawable/left_button"
+                android:id="@+id/radioButton" />
+
+            <picamerica.com.findmydrunkfriends.views.CustomRadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:button="@null"
+                android:text="photo"
+                android:background="@drawable/button"
+
+                android:id="@+id/radioButton2" />
+
+            <picamerica.com.findmydrunkfriends.views.CustomRadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:button="@null"
+                android:text="share"
+                android:background="@drawable/right_button"
+                android:id="@+id/radioButton3" />
+        </RadioGroup>
+
+        <RadioGroup
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:orientation="horizontal">
+
+            <picamerica.com.findmydrunkfriends.views.CustomRadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:button="@null"
+                android:text="km"
+                android:background="@drawable/left_button"
+                android:id="@+id/radioButton4" />
+
+            <picamerica.com.findmydrunkfriends.views.CustomRadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:button="@null"
+                android:text="miles"
+                android:background="@drawable/right_button"
+                android:id="@+id/radioButton5" />
+        </RadioGroup>
+    </RelativeLayout>
+
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".MainActivity" />
+        android:layout_below="@+id/top_menu">
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/imageView"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="5dp"
-        android:layout_marginTop="5dp"
-        android:layout_alignParentEnd="true"
-        android:src="@drawable/glass" />
+        <fragment
+            android:id="@+id/map"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:context=".MainActivity" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="@string/local325"
-        android:padding="10dp"
-        android:id="@+id/textView"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
-        android:background="@android:color/white" />
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageView"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_alignParentEnd="true"
+            android:src="@drawable/glass" />
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:hint="@string/local326"
-        android:ems="10"
-        android:id="@+id/editText"
-        android:background="@drawable/main_input_bg"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="@string/local325"
+            android:padding="10dp"
+            android:id="@+id/textView"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:background="@android:color/white" />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/local345"
-        android:textAllCaps="false"
-        android:textStyle="bold"
-        android:textSize="28sp"
-        android:layout_marginTop="20dp"
-        android:background="@android:color/transparent"
-        android:textColor="@android:color/white"
-        android:id="@+id/button"
-        android:layout_below="@+id/editText"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true" />
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:hint="@string/local326"
+            android:ems="10"
+            android:id="@+id/editText"
+            android:background="@drawable/main_input_bg"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="Legal"
-        android:layout_marginBottom="10dp"
-        android:layout_marginLeft="10dp"
-        android:id="@+id/textView2"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/local345"
+            android:textAllCaps="false"
+            android:textStyle="bold"
+            android:textSize="28sp"
+            android:layout_marginTop="20dp"
+            android:background="@android:color/transparent"
+            android:textColor="@android:color/white"
+            android:id="@+id/button"
+            android:layout_below="@+id/editText"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:textSize="26sp"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="@string/app_name"
-        android:id="@+id/textView3"
-        android:textStyle="bold"
-        android:textColor="@android:color/white"
-        android:layout_marginBottom="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_above="@+id/textView2"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="Legal"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="10dp"
+            android:id="@+id/textView2"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:textSize="26sp"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/app_name"
+            android:id="@+id/textView3"
+            android:textStyle="bold"
+            android:textColor="@android:color/white"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_above="@+id/textView2"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+    </RelativeLayout>
 
 
 </RelativeLayout>

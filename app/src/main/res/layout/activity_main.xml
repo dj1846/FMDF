@@ -4,64 +4,132 @@
     android:layout_height="match_parent">
 
     <RelativeLayout
-        android:padding="5dp"
         android:id="@+id/top_menu"
-        android:background="@android:color/white"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize">
+        android:layout_height="?attr/actionBarSize"
+        android:background="@android:color/white"
+        android:padding="5dp">
 
         <RadioGroup
+            android:id="@+id/first_switch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_centerVertical="true">
+            android:layout_centerVertical="true"
+            android:orientation="horizontal">
 
             <picamerica.com.findmydrunkfriends.views.CustomRadioButton
+                android:id="@+id/btn_friends"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:button="@null"
-                android:text="friends"
-                android:checked="true"
                 android:background="@drawable/left_button"
-                android:id="@+id/radioButton" />
+                android:button="@null"
+                android:text="friends" />
 
             <picamerica.com.findmydrunkfriends.views.CustomRadioButton
+                android:id="@+id/btn_photo"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" android:button="@null"
-                android:text="photo"
+                android:layout_height="wrap_content"
                 android:background="@drawable/button"
-
-                android:id="@+id/radioButton2" />
+                android:button="@null"
+                android:text="photo" />
 
             <picamerica.com.findmydrunkfriends.views.CustomRadioButton
+                android:id="@+id/btn_share"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" android:button="@null"
-                android:text="share"
+                android:layout_height="wrap_content"
                 android:background="@drawable/right_button"
-                android:id="@+id/radioButton3" />
+                android:button="@null"
+                android:text="share" />
         </RadioGroup>
 
         <RadioGroup
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_alignParentRight="true"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@+id/first_switch"
             android:orientation="horizontal">
 
             <picamerica.com.findmydrunkfriends.views.CustomRadioButton
+                android:id="@+id/btn_sat"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" android:button="@null"
-                android:text="km"
+                android:layout_height="wrap_content"
                 android:background="@drawable/left_button"
-                android:id="@+id/radioButton4" />
+                android:button="@null"
+                android:checked="true"
+                android:text="set" />
 
             <picamerica.com.findmydrunkfriends.views.CustomRadioButton
+                android:id="@+id/btn_map"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" android:button="@null"
-                android:text="miles"
+                android:layout_height="wrap_content"
                 android:background="@drawable/right_button"
-                android:id="@+id/radioButton5" />
+                android:button="@null"
+                android:text="map" />
         </RadioGroup>
+
+        <RadioGroup
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:layout_toLeftOf="@+id/distance_switch"
+            android:orientation="horizontal"
+            android:id="@+id/radioGroup">
+
+            <picamerica.com.findmydrunkfriends.views.CustomRadioButton
+                android:id="@+id/btn_demo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/left_button"
+                android:button="@null"
+                android:checked="true"
+                android:text="demo" />
+
+            <picamerica.com.findmydrunkfriends.views.CustomRadioButton
+                android:id="@+id/btn_real"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/right_button"
+                android:button="@null"
+                android:text="real" />
+        </RadioGroup>
+
+        <RadioGroup
+            android:id="@+id/distance_switch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:orientation="horizontal">
+
+            <picamerica.com.findmydrunkfriends.views.CustomRadioButton
+                android:id="@+id/btn_km"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/left_button"
+                android:button="@null"
+                android:checked="true"
+                android:text="  km " />
+
+            <picamerica.com.findmydrunkfriends.views.CustomRadioButton
+                android:id="@+id/btn_miles"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/right_button"
+                android:button="@null"
+                android:text="miles" />
+        </RadioGroup>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/img_info"
+            android:src="@drawable/circle_info"
+            android:layout_marginRight="5dp"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/radioGroup"
+            android:layout_toStartOf="@+id/radioGroup" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -77,80 +145,80 @@
             tools:context=".MainActivity" />
 
         <ImageView
+            android:id="@+id/imageView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/imageView"
-            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
             android:layout_marginRight="5dp"
             android:layout_marginTop="5dp"
-            android:layout_alignParentEnd="true"
             android:src="@drawable/glass" />
 
         <TextView
+            android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="@string/local325"
-            android:padding="10dp"
-            android:id="@+id/textView"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="20dp"
-            android:background="@android:color/white" />
+            android:background="@android:color/white"
+            android:padding="10dp"
+            android:text="@string/local325"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <EditText
+            android:id="@+id/editText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:inputType="textPersonName"
-            android:hint="@string/local326"
-            android:ems="10"
-            android:id="@+id/editText"
-            android:background="@drawable/main_input_bg"
+            android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
-            android:layout_centerHorizontal="true" />
+            android:background="@drawable/main_input_bg"
+            android:ems="10"
+            android:hint="@string/local326"
+            android:inputType="textPersonName" />
 
         <Button
+            android:id="@+id/button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/local345"
-            android:textAllCaps="false"
-            android:textStyle="bold"
-            android:textSize="28sp"
+            android:layout_below="@+id/editText"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
             android:layout_marginTop="20dp"
             android:background="@android:color/transparent"
+            android:text="@string/local345"
+            android:textAllCaps="false"
             android:textColor="@android:color/white"
-            android:id="@+id/button"
-            android:layout_below="@+id/editText"
-            android:layout_centerVertical="true"
-            android:layout_centerHorizontal="true" />
+            android:textSize="28sp"
+            android:textStyle="bold" />
 
         <TextView
+            android:id="@+id/textView2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="Legal"
-            android:layout_marginBottom="10dp"
-            android:layout_marginLeft="10dp"
-            android:id="@+id/textView2"
             android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:textSize="26sp"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="@string/app_name"
-            android:id="@+id/textView3"
-            android:textStyle="bold"
-            android:textColor="@android:color/white"
+            android:layout_alignParentStart="true"
             android:layout_marginBottom="10dp"
             android:layout_marginLeft="10dp"
+            android:text="Legal"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_above="@+id/textView2"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
+            android:layout_alignParentStart="true"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="10dp"
+            android:text="@string/app_name"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@android:color/white"
+            android:textSize="26sp"
+            android:textStyle="bold" />
     </RelativeLayout>
 
 

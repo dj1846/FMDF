@@ -57,7 +57,7 @@
                 android:background="@drawable/left_button"
                 android:button="@null"
                 android:checked="true"
-                android:text="set" />
+                android:text="set  " />
 
             <picamerica.com.findmydrunkfriends.views.CustomRadioButton
                 android:id="@+id/btn_map"
@@ -92,7 +92,7 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/right_button"
                 android:button="@null"
-                android:text="real" />
+                android:text="real  " />
         </RadioGroup>
 
         <RadioGroup
@@ -110,7 +110,7 @@
                 android:background="@drawable/left_button"
                 android:button="@null"
                 android:checked="true"
-                android:text="  km " />
+                android:text="  km   " />
 
             <picamerica.com.findmydrunkfriends.views.CustomRadioButton
                 android:id="@+id/btn_miles"

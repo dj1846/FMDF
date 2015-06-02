@@ -27,8 +27,8 @@
 
         <activity
             android:name=".MainActivity"
-            android:screenOrientation="landscape"
-            android:label="@string/title_activity_main" >
+            android:label="@string/title_activity_main"
+            android:screenOrientation="landscape" >
         </activity>
         <activity
             android:name=".SplashActivity"
@@ -38,6 +38,10 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".FriendsActivity"
+            android:label="@string/title_activity_friends" >
         </activity>
     </application>
 

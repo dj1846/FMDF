@@ -90,5 +90,6 @@
     <string name="Cancel">Cancel</string>
     <string name="gps_network_not_enabled">GPS not enabled</string>
     <string name="open_location_settings">Open Location Settings</string>
+    <string name="title_activity_friends">friends</string>
 
 </resources>

@@ -11,7 +11,7 @@
         android:padding="5dp">
 
         <RadioGroup
-            android:id="@+id/first_switch"
+            android:id="@+id/friends_switch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
@@ -47,8 +47,9 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
-            android:layout_toRightOf="@+id/first_switch"
-            android:orientation="horizontal">
+            android:layout_toRightOf="@+id/friends_switch"
+            android:orientation="horizontal"
+            android:id="@+id/map_switch">
 
             <picamerica.com.findmydrunkfriends.views.CustomRadioButton
                 android:id="@+id/btn_sat"
@@ -75,7 +76,7 @@
             android:layout_marginRight="10dp"
             android:layout_toLeftOf="@+id/distance_switch"
             android:orientation="horizontal"
-            android:id="@+id/radioGroup">
+            android:id="@+id/app_mode">
 
             <picamerica.com.findmydrunkfriends.views.CustomRadioButton
                 android:id="@+id/btn_demo"
@@ -128,8 +129,8 @@
             android:src="@drawable/circle_info"
             android:layout_marginRight="5dp"
             android:layout_centerVertical="true"
-            android:layout_toLeftOf="@+id/radioGroup"
-            android:layout_toStartOf="@+id/radioGroup" />
+            android:layout_toLeftOf="@+id/app_mode"
+            android:layout_toStartOf="@+id/app_mode" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -155,43 +156,51 @@
             android:layout_marginTop="5dp"
             android:src="@drawable/glass" />
 
-        <TextView
-            android:id="@+id/textView"
+        <LinearLayout
+            android:id="@+id/create_form"
+            android:visibility="gone"
+            android:orientation="vertical"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
             android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="20dp"
-            android:background="@android:color/white"
-            android:padding="10dp"
-            android:text="@string/local325"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
+            android:layout_centerHorizontal="true">
 
-        <EditText
-            android:id="@+id/editText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            android:background="@drawable/main_input_bg"
-            android:ems="10"
-            android:hint="@string/local326"
-            android:inputType="textPersonName" />
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="15dp"
+                android:background="@android:color/white"
+                android:padding="10dp"
+                android:text="@string/local325"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
 
-        <Button
-            android:id="@+id/button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/editText"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            android:layout_marginTop="20dp"
-            android:background="@android:color/transparent"
-            android:text="@string/local345"
-            android:textAllCaps="false"
-            android:textColor="@android:color/white"
-            android:textSize="28sp"
-            android:textStyle="bold" />
+            <EditText
+                android:id="@+id/editText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/main_input_bg"
+                android:ems="10"
+                android:layout_marginTop="15dp"
+                android:hint="@string/local326"
+                android:inputType="textPersonName" />
+
+            <Button
+                android:id="@+id/btn_create"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/editText"
+                android:layout_marginTop="20dp"
+                android:background="@android:color/transparent"
+                android:text="@string/local345"
+                android:textAllCaps="false"
+                android:textColor="@android:color/white"
+                android:textSize="28sp"
+                android:textStyle="bold" />
+        </LinearLayout>
 
         <TextView
             android:id="@+id/textView2"
@@ -218,6 +227,18 @@
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="@android:color/white"
             android:textSize="26sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Large Text"
+            android:id="@+id/textView4"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:textColor="@android:color/white"
             android:textStyle="bold" />
     </RelativeLayout>
 

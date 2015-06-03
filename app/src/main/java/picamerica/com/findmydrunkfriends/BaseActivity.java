@@ -38,7 +38,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         if (toolbar != null) {
             setSupportActionBar(toolbar);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            setActionBarIcon(R.drawable.back);
+            setActionBarIcon(R.drawable.back_arrow);
         }
     }
 

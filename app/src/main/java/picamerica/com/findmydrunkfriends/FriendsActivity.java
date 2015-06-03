@@ -11,6 +11,7 @@ public class FriendsActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setActionBarTitle(R.string.title_activity_friends);
     }
 
     @Override

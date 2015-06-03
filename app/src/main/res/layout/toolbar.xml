@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:elevation="8dp"
-    android:background="@color/actionbar_bg">
+    android:background="@android:color/white">
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"

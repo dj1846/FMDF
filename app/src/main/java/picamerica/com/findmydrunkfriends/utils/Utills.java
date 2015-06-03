@@ -34,6 +34,7 @@ public class Utills {
         if (!gps_enabled && !network_enabled) {
             AlertDialog.Builder dialog = new AlertDialog.Builder(context);
             dialog.setMessage(context.getResources().getString(R.string.gps_network_not_enabled));
+            dialog.setCancelable(false);
             dialog.setPositiveButton(context.getResources().getString(R.string.open_location_settings), new DialogInterface.OnClickListener() {
 
                 @Override
@@ -44,11 +45,8 @@ public class Utills {
                 }
             });
             dialog.setNegativeButton(context.getString(R.string.Cancel), new DialogInterface.OnClickListener() {
-
                 @Override
                 public void onClick(DialogInterface paramDialogInterface, int paramInt) {
-
-
                 }
             });
             dialog.show();

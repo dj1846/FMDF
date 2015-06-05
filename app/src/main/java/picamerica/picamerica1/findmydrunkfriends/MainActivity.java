@@ -1,4 +1,4 @@
-package picamerica.com.findmydrunkfriends;
+package picamerica.picamerica1.findmydrunkfriends;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -11,7 +11,6 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.RadioGroup;
-import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -28,7 +27,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import java.text.DateFormat;
 import java.util.Date;
 
-import picamerica.com.findmydrunkfriends.utils.Utills;
+import picamerica.picamerica1.findmydrunkfriends.utils.Utills;
 
 public class MainActivity extends FragmentActivity implements
         GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener  {

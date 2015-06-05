@@ -1,4 +1,4 @@
-package picamerica.com.findmydrunkfriends.utils;
+package picamerica.picamerica1.findmydrunkfriends.utils;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -8,7 +8,7 @@ import android.provider.Settings;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 
-import picamerica.com.findmydrunkfriends.R;
+import picamerica.picamerica1.findmydrunkfriends.R;
 
 /**
  * Created by ErRk on 6/2/2015.

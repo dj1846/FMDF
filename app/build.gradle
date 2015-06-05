@@ -5,7 +5,7 @@ android {
     buildToolsVersion "22.0.1"
 
     defaultConfig {
-        applicationId "picamerica.com.findmydrunkfriends"
+        applicationId "picamerica.picamerica1.findmydrunkfriends"
         minSdkVersion 9
         targetSdkVersion 22
         versionCode 1
@@ -21,6 +21,6 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:appcompat-v7:22.1.1'
-    compile 'com.google.android.gms:play-services:7.3.0'
+    compile 'com.android.support:appcompat-v7:22.2.0'
+    compile 'com.google.android.gms:play-services:7.5.0'
 }

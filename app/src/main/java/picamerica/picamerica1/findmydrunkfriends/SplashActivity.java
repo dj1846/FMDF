@@ -1,4 +1,4 @@
-package picamerica.com.findmydrunkfriends;
+package picamerica.picamerica1.findmydrunkfriends;
 
 import android.content.Intent;
 import android.os.Handler;

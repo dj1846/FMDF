@@ -1,9 +1,6 @@
-package picamerica.com.findmydrunkfriends;
+package picamerica.picamerica1.findmydrunkfriends;
 
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 
 
 public class FriendsActivity extends BaseActivity {

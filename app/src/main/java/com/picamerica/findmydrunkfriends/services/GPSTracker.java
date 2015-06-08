@@ -1,4 +1,4 @@
-package picamerica.picamerica1.findmydrunkfriends.services;
+package com.picamerica.findmydrunkfriends.services;
 
 import java.io.IOException;
 import java.util.List;
@@ -19,7 +19,7 @@ import android.os.IBinder;
 import android.provider.Settings;
 import android.util.Log;
 
-import picamerica.picamerica1.findmydrunkfriends.R;
+import com.picamerica.findmydrunkfriends.R;
 
 /**
  * Create this Class from tutorial :

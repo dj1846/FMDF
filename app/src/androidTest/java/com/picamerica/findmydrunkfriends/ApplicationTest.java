@@ -1,4 +1,4 @@
-package picamerica.picamerica1.findmydrunkfriends;
+package com.picamerica.findmydrunkfriends;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

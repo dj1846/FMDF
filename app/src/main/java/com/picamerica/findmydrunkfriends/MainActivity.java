@@ -1,4 +1,4 @@
-package picamerica.picamerica1.findmydrunkfriends;
+package com.picamerica.findmydrunkfriends;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -6,11 +6,14 @@ import android.location.Location;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AlertDialog;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -27,7 +30,8 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import java.text.DateFormat;
 import java.util.Date;
 
-import picamerica.picamerica1.findmydrunkfriends.utils.Utills;
+import com.picamerica.findmydrunkfriends.utils.Preferences;
+import com.picamerica.findmydrunkfriends.utils.Utills;
 
 public class MainActivity extends FragmentActivity implements
         GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener  {
@@ -76,15 +80,23 @@ public class MainActivity extends FragmentActivity implements
      * Time when the location was updated represented as a String.
      */
     protected String mLastUpdateTime = "";
+    protected String mUserID = null;
 
 
 
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
     private Button btnCreate;
+    private EditText edtCreate;
+    private TextView txtName;
     private RadioGroup mapSwitch;
     private RadioGroup appModeSwitch;
     private RadioGroup distanceSwitch;
     private RadioGroup friendSwitch;
+    private View topMenu;
+    private View createForm;
+    private View normalView;
+    private Preferences preferences;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,18 +104,55 @@ public class MainActivity extends FragmentActivity implements
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        preferences = Preferences.getInstance(this);
         setUpMapIfNeeded();
-        btnCreate      = (Button) findViewById(R.id.btn_create);
-        mapSwitch      = (RadioGroup) findViewById(R.id.map_switch);
-        appModeSwitch  = (RadioGroup) findViewById(R.id.app_mode);
-        distanceSwitch = (RadioGroup) findViewById(R.id.distance_switch);
-        friendSwitch   = (RadioGroup) findViewById(R.id.friends_switch);
-        mapSwitch.setOnCheckedChangeListener(switchChangedListener);
-        appModeSwitch.setOnCheckedChangeListener(switchChangedListener);
-        distanceSwitch.setOnCheckedChangeListener(switchChangedListener);
-        friendSwitch.setOnCheckedChangeListener(switchChangedListener);
-        btnCreate.setOnClickListener(createListener);
         buildGoogleApiClient();
+
+        topMenu = findViewById(R.id.top_menu);
+        normalView = findViewById(R.id.normal_view);
+        createForm = findViewById(R.id.create_form);
+        mUserID = preferences.getString(Preferences.USER_ID);
+        if(mUserID==null){
+            setupFirstUse();
+        }else{
+            setUpNormalUse();
+        }
+    }
+
+    private void setupFirstUse(){
+        try{
+            topMenu.setVisibility(View.GONE);
+            normalView.setVisibility(View.GONE);
+            createForm.setVisibility(View.VISIBLE);
+            edtCreate = (EditText) findViewById(R.id.edt_create);
+            btnCreate = (Button) findViewById(R.id.btn_create);
+            btnCreate.setOnClickListener(createListener);
+        }catch (Exception e){
+            Log.e(TAG,e.getMessage());
+        }
+    }
+
+    private void setUpNormalUse(){
+        try{
+            mUserID = preferences.getString(Preferences.USER_ID);
+            topMenu.setVisibility(View.VISIBLE);
+            normalView.setVisibility(View.VISIBLE);
+            createForm.setVisibility(View.GONE);
+
+            txtName      = (TextView) findViewById(R.id.text_name);
+            mapSwitch      = (RadioGroup) findViewById(R.id.map_switch);
+            appModeSwitch  = (RadioGroup) findViewById(R.id.app_mode);
+            distanceSwitch = (RadioGroup) findViewById(R.id.distance_switch);
+            friendSwitch   = (RadioGroup) findViewById(R.id.friends_switch);
+            txtName.setText(mUserID);
+            mapSwitch.setOnCheckedChangeListener(switchChangedListener);
+            appModeSwitch.setOnCheckedChangeListener(switchChangedListener);
+            distanceSwitch.setOnCheckedChangeListener(switchChangedListener);
+            friendSwitch.setOnCheckedChangeListener(switchChangedListener);
+
+        }catch (Exception e){
+            Log.e(TAG,e.getMessage());
+        }
     }
 
 
@@ -169,11 +218,17 @@ public class MainActivity extends FragmentActivity implements
     private View.OnClickListener createListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            findViewById(R.id.create_form).setVisibility(View.GONE);
-            AlertDialog.Builder dialog = Utills.getDialog(MainActivity.this, getString(R.string.local135), getString(R.string.local349));
-            dialog.setPositiveButton(R.string.local136,continueAfterCreate);
-            dialog.setCancelable(false);
-            dialog.show();
+            String userName = edtCreate.getText().toString();
+            if(!TextUtils.isEmpty(userName)) {
+                preferences.setString(Preferences.USER_ID,userName);
+                findViewById(R.id.create_form).setVisibility(View.GONE);
+                AlertDialog.Builder dialog = Utills.getDialog(MainActivity.this, getString(R.string.local135), getString(R.string.local349));
+                dialog.setPositiveButton(R.string.local136, continueAfterCreate);
+                dialog.setCancelable(false);
+                dialog.show();
+            }else{
+                edtCreate.setError("required field");
+            }
         }
     };
 
@@ -193,6 +248,7 @@ public class MainActivity extends FragmentActivity implements
         @Override
         public void onClick(DialogInterface dialogInterface, int i) {
             dialogInterface.dismiss();
+            setUpNormalUse();
         }
     };
 

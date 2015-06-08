@@ -1,10 +1,10 @@
-package picamerica.picamerica1.findmydrunkfriends.utils;
+package com.picamerica.findmydrunkfriends.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 
-import picamerica.picamerica1.findmydrunkfriends.R;
+import com.picamerica.findmydrunkfriends.R;
 
 
 /**

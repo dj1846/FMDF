@@ -1,4 +1,4 @@
-package picamerica.picamerica1.findmydrunkfriends.views;
+package com.picamerica.findmydrunkfriends.views;
 
 import android.annotation.TargetApi;
 import android.content.Context;
@@ -8,7 +8,7 @@ import android.os.Build;
 import android.util.AttributeSet;
 import android.widget.RadioButton;
 
-import picamerica.picamerica1.findmydrunkfriends.R;
+import com.picamerica.findmydrunkfriends.R;
 
 /**
  * Created by ErRk on 5/27/2015.

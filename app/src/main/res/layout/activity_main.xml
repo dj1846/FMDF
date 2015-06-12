@@ -10,14 +10,14 @@
         android:background="@android:color/white"
         android:padding="5dp">
 
-        <RadioGroup
+        <LinearLayout
             android:id="@+id/friends_switch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:orientation="horizontal">
 
-            <com.picamerica.findmydrunkfriends.views.CustomRadioButton
+            <com.picamerica.findmydrunkfriends.views.CustomButton
                 android:id="@+id/btn_friends"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -25,7 +25,7 @@
                 android:button="@null"
                 android:text="friends" />
 
-            <com.picamerica.findmydrunkfriends.views.CustomRadioButton
+            <com.picamerica.findmydrunkfriends.views.CustomButton
                 android:id="@+id/btn_photo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -33,14 +33,14 @@
                 android:button="@null"
                 android:text="photo" />
 
-            <com.picamerica.findmydrunkfriends.views.CustomRadioButton
+            <com.picamerica.findmydrunkfriends.views.CustomButton
                 android:id="@+id/btn_share"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/right_button"
                 android:button="@null"
                 android:text="share" />
-        </RadioGroup>
+        </LinearLayout>
 
         <RadioGroup
             android:layout_width="wrap_content"
@@ -212,8 +212,16 @@
             <ImageView
                 android:layout_width="70dp"
                 android:layout_height="70dp"
-                android:id="@+id/imageView2"
-                android:src="@drawable/common_ic_googleplayservices"
+                android:id="@+id/compass_icon"
+                android:src="@drawable/compass"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/empty_bottel"
+                android:src="@drawable/empty_bottel"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true" />
 
@@ -222,10 +230,11 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:text="Large Text"
+                android:layout_marginTop="10dp"
                 android:textColor="@android:color/white"
                 android:textStyle="bold"
                 android:id="@+id/txt_friend_anme"
-                android:layout_below="@+id/imageView2"
+                android:layout_below="@+id/compass_icon"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true" />
 
@@ -252,18 +261,30 @@
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentRight="true"
                 android:textStyle="bold" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/imageView5"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@+id/compass_icon"
+                android:layout_toEndOf="@+id/compass_icon"
+                android:src="@drawable/bottle_text" />
         </RelativeLayout>
 
-        <ImageView
-            android:id="@+id/imageView"
+        <TextView
+            android:id="@+id/txt_drink"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
+            android:textSize="26sp"
+            android:textStyle="bold"
+            android:gravity="center"
             android:layout_alignParentTop="true"
             android:layout_marginRight="5dp"
             android:layout_marginTop="5dp"
-            android:src="@drawable/glass" />
+            android:background="@drawable/glass" />
 
         <TextView
             android:id="@+id/textView2"

@@ -19,9 +19,6 @@ public class Preferences {
     private Context context;
     private static final String TAG = Preferences.class.getCanonicalName();
 
-    public static final String USER = "USER";
-    public static final String USER_ID = "USER_ID";
-
     private Preferences(){}
 
     public static Preferences getInstance(Context context){

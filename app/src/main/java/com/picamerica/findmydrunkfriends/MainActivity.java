@@ -1,8 +1,18 @@
 package com.picamerica.findmydrunkfriends;
 
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.Rect;
 import android.location.Location;
+import android.os.AsyncTask;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AlertDialog;
 import android.os.Bundle;
@@ -12,8 +22,10 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -24,14 +36,29 @@ import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 
+import com.picamerica.findmydrunkfriends.utils.AppConstants;
+import com.picamerica.findmydrunkfriends.utils.FriendsModel;
 import com.picamerica.findmydrunkfriends.utils.Preferences;
 import com.picamerica.findmydrunkfriends.utils.Utills;
+import com.picamerica.findmydrunkfriends.webservices.WebServiceHandler;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.json.XML;
 
 public class MainActivity extends FragmentActivity implements
         GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener  {
@@ -52,7 +79,7 @@ public class MainActivity extends FragmentActivity implements
 
     // Keys for storing activity state in the Bundle.
     protected final static String REQUESTING_LOCATION_UPDATES_KEY = "requesting-location-updates-key";
-    protected final static String LOCATION_KEY = "location-key";
+    public final static String LOCATION_KEY = "location-key";
     protected final static String LAST_UPDATED_TIME_STRING_KEY = "last-updated-time-string-key";
 
     /**
@@ -81,21 +108,32 @@ public class MainActivity extends FragmentActivity implements
      */
     protected String mLastUpdateTime = "";
     protected String mUserID = null;
+    protected int mDrinkCount = 0;
+    protected int mCurrentFriend = 0;
 
 
-
+    private List<FriendsModel> friendsList = new ArrayList<>();
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
     private Button btnCreate;
     private EditText edtCreate;
     private TextView txtName;
+    private TextView txtFriendName;
+    private TextView txtFrDistance;
+    private TextView txtDrinkTelly;
     private RadioGroup mapSwitch;
     private RadioGroup appModeSwitch;
     private RadioGroup distanceSwitch;
-    private RadioGroup friendSwitch;
+    private View btnFriend;
+    private View btnPhoto;
+    private View btnShare;
     private View topMenu;
     private View createForm;
     private View normalView;
+    private View compassView;
+    private View bottalView;
     private Preferences preferences;
+
+    private ProgressDialog progressDialog = null;
 
 
     @Override
@@ -111,7 +149,7 @@ public class MainActivity extends FragmentActivity implements
         topMenu = findViewById(R.id.top_menu);
         normalView = findViewById(R.id.normal_view);
         createForm = findViewById(R.id.create_form);
-        mUserID = preferences.getString(Preferences.USER_ID);
+        mUserID = preferences.getString(AppConstants.USER_ID);
         if(mUserID==null){
             setupFirstUse();
         }else{
@@ -134,27 +172,80 @@ public class MainActivity extends FragmentActivity implements
 
     private void setUpNormalUse(){
         try{
-            mUserID = preferences.getString(Preferences.USER_ID);
+            mUserID = preferences.getString(AppConstants.USER_ID);
             topMenu.setVisibility(View.VISIBLE);
             normalView.setVisibility(View.VISIBLE);
             createForm.setVisibility(View.GONE);
 
-            txtName      = (TextView) findViewById(R.id.text_name);
+            btnFriend    = findViewById(R.id.btn_friends);
+            btnPhoto     = findViewById(R.id.btn_photo);
+            btnShare     = findViewById(R.id.btn_share);
+            compassView  = findViewById(R.id.compass_icon);
+            bottalView   = findViewById(R.id.empty_bottel);
+
+            txtName        = (TextView) findViewById(R.id.text_name);
+            txtFriendName  = (TextView) findViewById(R.id.txt_friend_name);
+            txtFrDistance  = (TextView) findViewById(R.id.txt_fr_distance);
+            txtDrinkTelly  = (TextView) findViewById(R.id.txt_drink);
             mapSwitch      = (RadioGroup) findViewById(R.id.map_switch);
             appModeSwitch  = (RadioGroup) findViewById(R.id.app_mode);
             distanceSwitch = (RadioGroup) findViewById(R.id.distance_switch);
-            friendSwitch   = (RadioGroup) findViewById(R.id.friends_switch);
             txtName.setText(mUserID);
             mapSwitch.setOnCheckedChangeListener(switchChangedListener);
             appModeSwitch.setOnCheckedChangeListener(switchChangedListener);
             distanceSwitch.setOnCheckedChangeListener(switchChangedListener);
-            friendSwitch.setOnCheckedChangeListener(switchChangedListener);
+            btnFriend.setOnClickListener(topLinkListener);
+            btnPhoto.setOnClickListener(topLinkListener);
+            btnShare.setOnClickListener(topLinkListener);
+            txtDrinkTelly.setOnClickListener(drinkIncrementListener);
+            compassView.setOnClickListener(compassListener);
 
         }catch (Exception e){
             Log.e(TAG,e.getMessage());
         }
     }
 
+
+    private View.OnClickListener compassListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+//            mCurrentFriend
+            findViewById(R.id.bottel_text).setVisibility(View.GONE);
+            if(mCurrentFriend<friendsList.size()){
+                FriendsModel currentFriend = friendsList.get(mCurrentFriend);
+                txtFriendName.setText(currentFriend.getUserName());
+                String distance = "%s %s %s";
+                distance = String.format(distance,currentFriend.getDistance(),currentFriend.getCardinal(),currentFriend.getLastTimeStamp());
+                txtFrDistance.setText(distance);
+                bottalView.setRotation(currentFriend.getBearing()+45);
+                if(++mCurrentFriend==friendsList.size()){
+                    mCurrentFriend=0;
+                }
+            }
+        }
+    };
+
+    private View.OnClickListener drinkIncrementListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            mDrinkCount++;
+            if(preferences.getBoolean(AppConstants.FRIST_DRINK)){
+                txtDrinkTelly.setText(String.valueOf(mDrinkCount));
+            }else{
+                AlertDialog.Builder dialog = Utills.getDialog(MainActivity.this, getString(R.string.local376), getString(R.string.local377));
+                dialog.setPositiveButton(R.string.local136, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                        preferences.setBoolean(AppConstants.FRIST_DRINK, true);
+                        txtDrinkTelly.setText(String.valueOf(mDrinkCount));
+                    }
+                });
+                dialog.setCancelable(false);
+                dialog.show();
+            }
+        }
+    };
 
     /**
      * Sets up the map if it is possible to do so (i.e., the Google Play services APK is correctly
@@ -188,47 +279,70 @@ public class MainActivity extends FragmentActivity implements
      * This should only be called once and when we are sure that {@link #mMap} is not null.
      */
     private void setUpMap() {
-        mMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
-        String title = "Ryan Smith";
-        LatLng demolat = new LatLng(mCurrentLocation.getLatitude() - .0055,mCurrentLocation.getLongitude() + .0015);
-        String distance = ".9 miles SSE of you, 16 minutes ago";
-//      user id = “rsmith”;
-//      bearing = 165;
-        mMap.addMarker(new MarkerOptions().position(demolat).title(title).snippet(distance));
+        if (mCurrentLocation != null && mMap!=null) {
+            mMap.clear();
+            RadioButton mapTypeBtn = (RadioButton) findViewById(R.id.btn_sat);
+            RadioButton appModeBtn = (RadioButton) findViewById(R.id.btn_demo);
+            mMap.setMapType(mapTypeBtn.isChecked() ? GoogleMap.MAP_TYPE_SATELLITE : GoogleMap.MAP_TYPE_NORMAL);
+            if (appModeBtn.isChecked()) {
+                friendsList = AppConstants.getDemoFriends(new LatLng(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude()));
+            }
 
-        title = "Candace Johnson";
-        demolat = new LatLng(mCurrentLocation.getLatitude() - .002,mCurrentLocation.getLongitude() + .003);
-//      user id = “ccj”;
-//      bearing = 125;
-        distance = ".3 miles SE of you, 5 minutes ago";
-        mMap.addMarker(new MarkerOptions().position(demolat).title(title).snippet(distance));
-
-        title = "Kevin Newport";
-        demolat = new LatLng(mCurrentLocation.getLatitude() + .001,mCurrentLocation.getLongitude() - .007);
-
-//      user id = “newport1”;
-//      bearing = 280;
-        distance = "1.7 miles NW of you, 2 minutes ago";
-        mMap.addMarker(new MarkerOptions().position(demolat).title(title).snippet(distance));
-
+            /*for (int i = 0; i < friendsList.size(); i++) {
+                FriendsModel friend = friendsList.get(i);
+                String title = friend.getUserName();
+                LatLng demoLat = friend.getLatLng();
+                String distance = "%s %s %s";
+                distance = String.format(distance, friend.getDistance(), friend.getCardinal(), friend.getLastTimeStamp());
+                mMap.addMarker(new MarkerOptions().position(demoLat).title(title).snippet(distance));
+            }*/
+            FriendsModel[]aa= new FriendsModel[friendsList.size()];
+            aa = friendsList.toArray(aa);
+            new markerBitmapDownload().execute(aa);
+        }
     }
-
-
 
     private View.OnClickListener createListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
             String userName = edtCreate.getText().toString();
-            if(!TextUtils.isEmpty(userName)) {
-                preferences.setString(Preferences.USER_ID,userName);
+            if(!TextUtils.isEmpty(userName) && mCurrentLocation!=null) {
+                HashMap<String,String> request = new HashMap<>();
+                request.put("handle",userName);
+                request.put("lat", String.valueOf(mCurrentLocation.getLatitude()));
+                request.put("lng", String.valueOf(mCurrentLocation.getLongitude()));
+                WebServiceHandler webServiceHandler = WebServiceHandler.getInstanceWithProgress(MainActivity.this);
+                webServiceHandler.init("findmydrunkfriends_createid.php", WebServiceHandler.RequestType.GET, request, createHandler);
+            }else if(mCurrentLocation==null){
+                Utills.checkNetwork(MainActivity.this);
+            }else{
+                edtCreate.setError(getString(R.string.local315));
+            }
+        }
+    };
+
+    private WebServiceHandler.WebServiceCallBackListener createHandler = new WebServiceHandler.WebServiceCallBackListener() {
+        @Override
+        public void onRequestSuccess(String response) {
+            if(response!=null && "added".equalsIgnoreCase(response)){
+                String userName = edtCreate.getText().toString();
+                preferences.setString(AppConstants.USER_ID,userName);
                 findViewById(R.id.create_form).setVisibility(View.GONE);
                 AlertDialog.Builder dialog = Utills.getDialog(MainActivity.this, getString(R.string.local135), getString(R.string.local349));
                 dialog.setPositiveButton(R.string.local136, continueAfterCreate);
                 dialog.setCancelable(false);
                 dialog.show();
             }else{
-                edtCreate.setError("required field");
+                AlertDialog.Builder dialog = Utills.getDialog(MainActivity.this, "Failed", getString(R.string.local327));
+                dialog.setPositiveButton(R.string.local136, null);
+                dialog.setCancelable(false);
+                dialog.show();
             }
+        }
+
+        @Override
+        public void onRequestFailed(String errorMsg) {
+
         }
     };
 
@@ -253,42 +367,61 @@ public class MainActivity extends FragmentActivity implements
     };
 
 
+    private View.OnClickListener topLinkListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            switch (view.getId()){
+                case R.id.btn_friends:
+                    Intent friendsActivity =new Intent(MainActivity.this,FriendsActivity.class);
+                    friendsActivity.putExtra(LOCATION_KEY, mCurrentLocation);
+                    startActivity(friendsActivity);
+                    break;
+                case R.id.btn_photo:
+                    startActivity(new Intent(MainActivity.this,PhotoActivity.class));
+                    break;
+                case R.id.btn_share:
+                    startActivity(new Intent(MainActivity.this,ShareActivity.class));
+                    break;
+            }
+        }
+    };
+
     private RadioGroup.OnCheckedChangeListener switchChangedListener = new RadioGroup.OnCheckedChangeListener() {
         @Override
         public void onCheckedChanged(RadioGroup radioGroup, int checkedId) {
             switch (radioGroup.getId()){
-                case R.id.friends_switch :
-                    if(checkedId==R.id.btn_friends){
-                        startActivity(new Intent(MainActivity.this,FriendsActivity.class));
-                    }else if(checkedId == R.id.btn_photo){
-
-                    }else if(checkedId == R.id.btn_share){
-
-                    }
-                    break;
                 case R.id.map_switch :
                     if (mMap != null) {
                         if(checkedId==R.id.btn_map){
                             mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-//                            mMap.invalidate();
                         }else if(checkedId == R.id.btn_sat){
                             mMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
                         }
                     }
                     break;
                 case R.id.app_mode :
-                    if(checkedId==R.id.btn_demo){
-
-                    }else if(checkedId == R.id.btn_real){
-
+                        preferences.setBoolean(AppConstants.APP_MODE,checkedId==R.id.btn_real);
+                        mDrinkCount=0;
+                        mCurrentFriend=0;
+                        txtDrinkTelly.setText("");
+                    if(checkedId==R.id.btn_real && mCurrentLocation != null){
+                        requestForFriendsList();
+                    }else{
+                        setUpMap();
                     }
+
                     break;
                 case R.id.distance_switch :
-                    if(checkedId==R.id.btn_km){
+                        preferences.setBoolean(AppConstants.DISTANCE_UNIT,checkedId==R.id.btn_km);
+                        mCurrentFriend=0;
+                    RadioButton appModeBtn = (RadioButton) findViewById(R.id.btn_demo);
 
-                    }else if(checkedId == R.id.btn_miles){
+                    if(!appModeBtn.isChecked() && mCurrentLocation != null){
+                            requestForFriendsList();
+                        }else{
+                            setUpMap();
+                        }
 
-                    }
                     break;
 
             }
@@ -441,5 +574,161 @@ public class MainActivity extends FragmentActivity implements
         savedInstanceState.putParcelable(LOCATION_KEY, mCurrentLocation);
         savedInstanceState.putString(LAST_UPDATED_TIME_STRING_KEY, mLastUpdateTime);
         super.onSaveInstanceState(savedInstanceState);
+    }
+
+    /**
+     * Get friends data from server
+     * according to user preferences
+     * selected on top switches.
+     * http://picamerica.com/findmydrunkfriends_getinvites.php?
+     * handle=x&pw=gopitt&mylat=x&mylng=x&miles=x
+     */
+    private void requestForFriendsList(){
+
+        String mUserID = preferences.getString(AppConstants.USER_ID);
+        RadioButton distBtn = (RadioButton) findViewById(R.id.btn_miles);
+
+        HashMap<String,String> request = new HashMap<>();
+        request.put("handle",mUserID);
+        request.put("pw","gopitt");
+        request.put("mylat",String.valueOf(mCurrentLocation.getLatitude()));
+        request.put("mylng",String.valueOf(mCurrentLocation.getLongitude()));
+        request.put("miles",distBtn.isChecked()?"1":"0");
+
+        WebServiceHandler webServiceHandler = WebServiceHandler.getInstanceWithProgress(MainActivity.this);
+        webServiceHandler.init("findmydrunkfriends_getinvites.php", WebServiceHandler.RequestType.GET, request, friendsHandler);
+    }
+
+    private WebServiceHandler.WebServiceCallBackListener friendsHandler = new WebServiceHandler.WebServiceCallBackListener() {
+        @Override
+        public void onRequestSuccess(String response) {
+            List<FriendsModel> demoFriends = new ArrayList<>();
+
+            try {
+                JSONObject responceData = XML.toJSONObject(response);
+
+                if (responceData.has("hit")) {
+                    JSONArray hitArray = responceData.getJSONArray("hit");
+                    if(hitArray.length()>0){
+
+                        for (int i = 0; i < hitArray.length(); i++) {
+                            JSONObject jobj = hitArray.getJSONObject(i);
+                            long id = jobj.getLong("id");
+                            String title = jobj.getString("name");
+                            LatLng friendLatLng = new LatLng(jobj.getDouble("lat"),jobj.getDouble("lng"));
+                            String user_id = jobj.getString("sec");
+                            String cardinal = jobj.getString("cardinal");
+                            String distance = jobj.getString("dist");
+                            String timeStamp = jobj.getString("timestamp_lastchg");
+                            long bearing = jobj.getLong("bearing");
+                            FriendsModel friendsModel = new FriendsModel(user_id,title,cardinal,timeStamp,distance,bearing,friendLatLng);
+                            friendsModel.setId(id);
+                            demoFriends.add(friendsModel);
+                        }
+                    }else{
+
+                    }
+                }
+            } catch (Exception e) {
+                Log.i(TAG, "Exception :: " + e.getMessage());
+            }
+            friendsList = demoFriends;
+            setUpMap();
+        }
+
+        @Override
+        public void onRequestFailed(String errorMsg) {
+
+        }
+    };
+
+    public class markerBitmapDownload extends AsyncTask<FriendsModel,Void,List<MarkerOptions>>{
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progressDialog = new ProgressDialog(MainActivity.this);
+            progressDialog.setMessage("Setting Friends locations...");
+            progressDialog.setCancelable(false);
+            progressDialog.show();
+        }
+
+        @Override
+        protected List<MarkerOptions> doInBackground(FriendsModel... friends) {
+            List<MarkerOptions> markers = new ArrayList<>();
+
+            for (int i = 0; i <friends.length ; i++) {
+                FriendsModel friend = friends[i];
+                Bitmap bmImg = downloadUserImage(friend.getUserId());
+
+                String title = friend.getUserName();
+                LatLng demoLat = friend.getLatLng();
+                String distance = "%s %s %s";
+                distance = String.format(distance, friend.getDistance(), friend.getCardinal(), friend.getLastTimeStamp());
+                markers.add(new MarkerOptions().position(demoLat).title(title).snippet(distance).icon(BitmapDescriptorFactory.fromBitmap(bmImg)));
+            }
+            Bitmap bmImg = downloadUserImage(mUserID);
+            markers.add(new MarkerOptions().position(new LatLng(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude())).icon(BitmapDescriptorFactory.fromBitmap(bmImg)));
+            return markers;
+        }
+
+        @Override
+        protected void onPostExecute(List<MarkerOptions> markerOptionses) {
+            super.onPostExecute(markerOptionses);
+            progressDialog.dismiss();
+            for (int i = 0; i < markerOptionses.size(); i++) {
+                mMap.addMarker(markerOptionses.get(i));
+            }
+
+        }
+    }
+
+    private Bitmap downloadUserImage(String userId){
+        Bitmap bmImg = null;
+        try {
+            URL url = new URL(String.format("http://picamerica.com/upload/%s.jpg",userId));
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setDoInput(true);
+            conn.connect();
+            InputStream is = conn.getInputStream();
+            bmImg = BitmapFactory.decodeStream(is);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        if(bmImg==null)
+            bmImg= BitmapFactory.decodeResource(getResources(),
+                    R.drawable.default_image);
+        bmImg = getCroppedBitmapDrawable(Bitmap.createScaledBitmap(bmImg, 100, 100,
+                true));
+        return bmImg;
+    }
+
+    public Bitmap getCroppedBitmapDrawable(Bitmap bitmap){
+        try {
+            Bitmap output = Bitmap.createBitmap(100,112, Bitmap.Config.ARGB_8888);
+            Canvas canvas = new Canvas(output);
+
+            final int color = 0xff424242;
+            final Paint paint = new Paint();
+            final Rect rect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
+            final Rect brect = new Rect(0, 0, output.getWidth(), output.getHeight());
+
+            paint.setAntiAlias(true);
+            canvas.drawARGB(0, 0, 0, 0);
+            paint.setColor(color);
+            canvas.drawCircle(bitmap.getWidth() / 2, bitmap.getHeight() / 2,
+                    bitmap.getWidth() / 2, paint);
+            paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
+            canvas.drawBitmap(bitmap, rect, rect, paint);
+            Bitmap bmImg = BitmapFactory.decodeResource(getResources(),
+                    R.drawable.redcircle);
+            bmImg = Bitmap.createScaledBitmap(bmImg, 100, 112, false);
+            canvas.drawBitmap(bmImg, brect, brect, null);
+            return output;
+        }catch (Exception e){
+            e.printStackTrace();
+
+        }
+        return null;
     }
 }

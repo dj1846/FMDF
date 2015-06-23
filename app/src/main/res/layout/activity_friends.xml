@@ -16,7 +16,7 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="@string/local335"
-            android:id="@+id/textView4"
+            android:id="@+id/user_name"
             android:layout_centerVertical="true"
             android:layout_centerHorizontal="true" />
 
@@ -32,17 +32,17 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/imageView3"
+            android:id="@+id/img_add"
             android:layout_centerVertical="true"
             android:layout_marginLeft="20dp"
-            android:layout_toRightOf="@+id/textView4"
-            android:layout_toEndOf="@+id/textView4"
+            android:layout_toRightOf="@+id/user_name"
+            android:layout_toEndOf="@+id/user_name"
             android:src="@drawable/circle_add" />
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/imageView4"
+            android:id="@+id/img_back"
             android:src="@drawable/back_arrow"
             android:layout_centerVertical="true"
             android:layout_alignParentLeft="true"
@@ -53,6 +53,9 @@
         android:id="@+id/list_friends"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:divider="@android:color/transparent"
+        android:padding="@dimen/activity_horizontal_margin"
         android:layout_below="@+id/top_bar"
-        android:background="@drawable/bg"></ListView>
+        android:background="@drawable/bg"/>
 </RelativeLayout>

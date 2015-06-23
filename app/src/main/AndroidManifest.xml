@@ -5,8 +5,9 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
+    <uses-permission android:name="android.permission.SEND_SMS" />
     <!--
  The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
          Google Maps Android API v2, but are recommended.
@@ -27,12 +28,12 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name="com.picamerica.findmydrunkfriends.MainActivity"
+            android:name=".MainActivity"
             android:label="@string/title_activity_main"
             android:screenOrientation="landscape" >
         </activity>
         <activity
-            android:name="com.picamerica.findmydrunkfriends.SplashActivity"
+            android:name=".SplashActivity"
             android:screenOrientation="landscape" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -41,9 +42,24 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.picamerica.findmydrunkfriends.FriendsActivity"
-            android:screenOrientation="landscape"
-            android:label="@string/title_activity_friends" >
+            android:name=".FriendsActivity"
+            android:label="@string/title_activity_friends"
+            android:screenOrientation="landscape" >
+        </activity>
+        <activity
+            android:name=".AddFriendsActivity"
+            android:label="@string/title_activity_add_friends"
+            android:screenOrientation="landscape" >
+        </activity>
+        <activity
+            android:name=".ShareActivity"
+            android:label="@string/title_activity_share"
+            android:screenOrientation="landscape" >
+        </activity>
+        <activity
+            android:name=".PhotoActivity"
+            android:label="@string/title_activity_photo"
+            android:screenOrientation="portrait">
         </activity>
     </application>
 
